@@ -32,11 +32,14 @@ public class LogicTest : MonoBehaviour
         // C#7 Local Function
         bool MiddleMan(bool livingState, int aliveCount)
         {
-            return false;
+            return GameOfLifeUtility.DecideNextState(livingState, aliveCount);
         }
 
         List<TestData> currentIsLiving = new();
         List<TestData> currentIsDead = new();
+
+        //List<TestData> currentIsLiving = new List<TestData>();
+        //List<TestData> currentIsDead = new List<TestData>();
 
         for (var i = 0; i <= 8; i++)
         {
