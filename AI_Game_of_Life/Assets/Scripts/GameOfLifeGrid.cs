@@ -20,7 +20,7 @@ public class GameOfLifeGrid : MonoBehaviour
             livingCells.Add(initialCells[i], cell);
         }
 
-        StartCoroutine(UpdateRoutine());
+        //StartCoroutine(UpdateRoutine());
     }
 
     private static readonly List<Vector2Int> NEIGHBOUR_DIRECTIONS = new()
