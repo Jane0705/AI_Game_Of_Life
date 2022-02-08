@@ -20,7 +20,7 @@ public class GameOfLifeGrid : MonoBehaviour
             livingCells.Add(initialCells[i], cell);
         }
 
-        //StartCoroutine(UpdateRoutine());
+        StartCoroutine(UpdateRoutine());
     }
 
     private static readonly List<Vector2Int> NEIGHBOUR_DIRECTIONS = new()
@@ -91,10 +91,34 @@ public class GameOfLifeGrid : MonoBehaviour
         }
 
         //Part 2
+        Dictionary<Vector2Int, CellData> nextLivingCells = new();
+
+        foreach(KeyValuePair<Vector2Int, CellData> kvp in relevantCells)
+        {
+            if(!nextLivingCells.ContainsKey(kvp.Key))
+            {
+                int aliveCount = GetLivingCount(GetNeighbours(kvp.Key));
+                //decide next state based on cell rule
+                bool nextIsAlive = GameOfLifeUtility.DecideNextState(kvp.Value.IsAlive, aliveCount);
+
+                if(nextIsAlive) //if alive, put them in a new collection
+                {
+                    nextLivingCells.Add(kvp.Key, new CellData(kvp.Key, true));
+                }
+            }
+        }
+        //replace
+        livingCells = nextLivingCells;
     }
 
-    //IEnumerator UpdateRoutine()
-    //{
+    IEnumerator UpdateRoutine()
+    {
+        while(true)
+        {
+            yield return new WaitForSeconds(0.5f);
 
-    //}
+            SimulateNextStep();
+            SendMessage("UpdateVisualization", new List<Vector2Int>(livingCells.Keys));
+        }
+    }
 }
